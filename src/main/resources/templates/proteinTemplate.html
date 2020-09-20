@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/headerPart :: common-headerPart" />
+
+<body>
+	<div th:replace="common/headerPart :: navbar" ></div>
+
+	<div class="container">
+		<div class="row" style="margin-bottom: 50px;">
+			<div class="col-xs-32">
+				<h2 class="section-headline1">
+					<h2 class="section-headline">
+						<span style="float:left;"><strong>Protein Products</strong></span>
+					</h2>
+				</h2>
+	
+		</div>
+		<br/>
+
+		<div class="row" style="margin-top: 60px;">
+		<div class="col-xs-3">
+				<h3><label for="kategoriya">Category</label></h3>
+				<div class="list-group" id="kategoriya">
+					<a th:href="@{/proteinTemplate(kategoriya='All')}" th:classappend="${activeAll}? 'active'" class="list-group-item">All</a>
+					<a th:href="@{/searchByKategoriya(kategoriya='NaturallyFlavoured')}" th:classappend="${activeNaturallyFlavoured}? 'active'" class="list-group-item">Naturally Flavoured</a>
+					<a th:href="@{/searchByKategoriya(kategoriya='PlatinumSeries')}" th:classappend="${activePlatinumSeries}? 'active'" class="list-group-item">Platinum Series</a>
+					<a th:href="@{/searchByKategoriya(kategoriya='ProSeries')}" th:classappend="${activeProSeries}? 'active'" class="list-group-item">Pro Series</a>
+					<a th:href="@{/searchByKategoriya(kategoriya='GoldStandard')}" th:classappend="${activeGoldStandard}? 'active'" class="list-group-item">Gold Standard</a>
+				</div>
+			</div>
+			<div class="col-xs-9 col-xs-offset-3">
+				<div th:if="${emptyList}">
+					<h5 style="font-style: italic;">Oops, no result is found. Try
+						something else or try again later.</h5>
+				</div>
+
+				<table border="1" id="proteinList">
+					<thead>
+						<tr>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="product-item" data-th-each="protein : ${proteinList}">
+							<td>
+								<div th:if="${protein != null}">
+									<div class="row" style="margin-bottom: 30px;">
+										<div class="col-xs-3">
+											<a th:href="@{/proteinTemplate?id=}+${protein.id}"><img
+												class="img-responsive shelf-book"
+												th:src="#{adminPath}+@{/images/protein/}+${protein.id}+'.png'" /></a>
+										</div>
+										<div class="col-xs-9">
+											<a th:href="@{/proteinDetails?id=}+${protein.id}"><h4
+													th:text="${protein.basliq}"></h4></a>
+							
+											
+											<a th:href="@{/proteinDetails?id=}+${protein.id}"><span
+												style="font-size: x-large; color: #db3208;">$<span
+													th:text="${#numbers.formatDecimal(protein.bizimQiymet, 0 , 'COMMA', 2, 'POINT')}"></span></span></a>
+
+											<span style="text-decoration: line-through;">$<span
+												th:text="${#numbers.formatDecimal(protein.olanQiymet, 0 , 'COMMA', 2, 'POINT')}"></span></span>
+
+											<p th:utext="${#strings.abbreviate(protein.aciqlama, 1000)}"></p>
+										</div>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+
+
+
+
+
+			</div>
+		</div>
+	</div>
+	<!-- end of container -->
+
+<div th:replace="common/headerPart :: footer"/>
+	<div th:replace="common/headerPart :: body-bottom-scripts" ></div>
+	<script>
+		$(document).ready(
+				function() {
+					$('#proteinList').DataTable(
+							{
+								"lengthMenu" : [ [ 5, 10, 15, 20, -1 ],
+										[ 5, 10, 15, 20, "All" ] ],
+								"ordering" : false,
+								stateSave : true
+							});
+					$("#proteinList").on('page.dt', function() {
+						$('html, body').animate({
+							scrollTop: $('#proteinList').offSet().top
+						},200);
+					});
+				});
+	</script>
+
+</body>
+</html>

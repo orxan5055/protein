@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/headerPart :: common-headerPart" />
+
+<body style = "background: silver;">
+	<div th:replace="common/headerPart :: navbar" />
+
+	
+		
+
+		<div class="row" style="margin-top: 250px;margin-bottom: 250px;">
+			<div class="col-xs-12">
+				<div class="alert alert-success">
+					<h3>
+						<i class="fa fa-check" aria-hidden="true"
+							style="color: limegreen;"></i> Thank you, your order has been
+						placed.
+					</h3>
+					<h4>
+						The estimated delivery date is <span
+							th:text="${estimatedDeliveryDate}"></span>
+					</h4>
+				</div>
+
+				<h3>List of Items</h3>
+				<div class="row" th:each="cartItem : ${cartItemList}">
+					<hr />
+					<div class="col-xs-2"></div>
+					<div class="col-xs-2">
+
+						<a th:href="@{/proteinDetails(id=${cartItem.protein.id})}"> <img
+							class="img-responsive shelf-book"
+							th:src="#{adminPath}+@{/images/protein/}+${cartItem.protein.id}+'.png'"
+							style="width: 100px;" />
+						</a>
+					</div>
+					<div class="col-xs-6">
+						<div style="margin-left: 50px;">
+							<a th:href="@{/proteinDetails?id=}+${cartItem.protein.id}"><h4
+									th:text="${cartItem.protein.basliq}"></h4></a>
+						</div>
+					</div>
+
+					<div class="col-xs-2">
+						<h5 style="color: #db3208; font-size: large;">
+							$<span th:text="${cartItem.protein.bizimQiymet}"
+								th:style="${cartItem.protein.stokdakiSay}==0? 'text-decoration: line-through' : ''"></span>
+						</h5>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end of container -->
+
+
+<div th:replace="common/headerPart :: footer"/>
+	<div th:replace="common/headerPart :: body-bottom-scripts" />
+</body>
+</html>
